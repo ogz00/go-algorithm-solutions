@@ -54,19 +54,19 @@ func isBalanced(expression string) bool {
 
 }
 
-type node struct {
+type stackNode struct {
 	data rune
-	next *node
+	next *stackNode
 }
 
 type Stack struct {
-	top   *node
+	top   *stackNode
 	count int
 	lock  *sync.Mutex
 }
 
-func NewNode(item rune) *node {
-	return &node{
+func NewNode(item rune) *stackNode {
+	return &stackNode{
 		data:item,
 	}
 }
@@ -107,7 +107,7 @@ func (s *Stack) pop() rune {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	var n *node
+	var n *stackNode
 	if (s.top != nil) {
 		n = s.top
 		s.top = n.next

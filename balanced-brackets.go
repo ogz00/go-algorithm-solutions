@@ -29,59 +29,59 @@ func isBalanced(expression string) bool {
 		return false
 	} else {
 		brackets := [] rune(expression)
-		s := NewStack()
+		s := NewRuneStack()
 		for _, bracket := range brackets {
 
 			switch (bracket) {
 			case '{':
-				s.push('}')
+				s.pushRune('}')
 				break
 			case '(':
-				s.push(')')
+				s.pushRune(')')
 				break
 			case '[':
-				s.push(']')
+				s.pushRune(']')
 				break
 			default :
-				if (s.isEmpty() || bracket != s.pop()) {
+				if (s.isEmptyRune() || bracket != s.popRune()) {
 					return false
 				}
 			}
 
 		}
-		return s.isEmpty();
+		return s.isEmptyRune();
 	}
 
 }
 
-type stackNode struct {
+type runeNode struct {
 	data rune
-	next *stackNode
+	next *runeNode
 }
 
 type Stack struct {
-	top   *stackNode
+	top   *runeNode
 	count int
 	lock  *sync.Mutex
 }
 
-func NewNode(item rune) *stackNode {
-	return &stackNode{
+func runeNode(item rune) *runeNode {
+	return &runeNode{
 		data:item,
 	}
 }
 
-func NewStack() *Stack {
+func NewRuneStack() *Stack {
 	s := &Stack{}
 	s.lock = &sync.Mutex{}
 	return s
 }
 
-func (s *Stack) isEmpty() bool {
+func (s *Stack) isEmptyRune() bool {
 	return s.top == nil
 }
 
-func (s *Stack) peek() rune {
+func (s *Stack) peekRune() rune {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
@@ -89,11 +89,11 @@ func (s *Stack) peek() rune {
 	return n.data
 }
 
-func (s *Stack) push(data rune) {
+func (s *Stack) pushRune(data rune) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	n := NewNode(data)
+	n := runeNode(data)
 	if s.top == nil {
 		s.top = n
 	} else {
@@ -103,11 +103,11 @@ func (s *Stack) push(data rune) {
 	s.count++
 }
 
-func (s *Stack) pop() rune {
+func (s *Stack) popRune() rune {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	var n *stackNode
+	var n *runeNode
 	if (s.top != nil) {
 		n = s.top
 		s.top = n.next

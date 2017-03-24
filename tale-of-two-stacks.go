@@ -30,25 +30,25 @@ type Queue struct {
 }
 
 func (q *Queue) push(data int) {
-	q.stack_newest.push(data)
+	q.stack_newest.pushRune(data)
 }
 
 func (q *Queue) pop() {
 	if (q.stack_oldest.count == 0) {
 		for q.stack_newest.count > 0 {
-			q.stack_oldest.push(q.stack_newest.pop())
+			q.stack_oldest.pushRune(q.stack_newest.popRune())
 		}
 	}
-	q.stack_oldest.pop()
+	q.stack_oldest.popRune()
 }
 
 func (q *Queue) front() int{
 	if (q.stack_oldest.count == 0) {
 		for q.stack_newest.count > 0 {
-			q.stack_oldest.push(q.stack_newest.pop())
+			q.stack_oldest.pushRune(q.stack_newest.popRune())
 		}
 	}
-	return q.stack_oldest.peek()
+	return q.stack_oldest.peekRune()
 }
 
 type stackNode struct {

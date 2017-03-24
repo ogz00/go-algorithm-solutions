@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+
 	h := &genericHeap{}
 	for i := 6; i > 0; i-- {
 		h.push(rand.Intn(100))
@@ -14,7 +15,7 @@ func main() {
 	fmt.Printf("\nminimum: %d\n", (*h)[0])
 	balanced := []int{}
 	for h.Len() > 0 {
-		balanced = append(balanced, h.Pop().(int))
+		balanced = append(balanced, h.Poll().(int))
 		/*for _, v := range balanced {
 			fmt.Printf("%d ", v)
 		}
@@ -98,7 +99,7 @@ func (h genericHeap) peek() interface{} {
 	}
 }
 
-func (h *genericHeap) Pop() interface{} {
+func (h *genericHeap) Poll() interface{} {
 	if (h.Len() != 0) {
 		old := *h
 		n := old.Len()
